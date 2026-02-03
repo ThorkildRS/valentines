@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💕 Vil du være min Valentine? 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .page.active {
+            opacity: 1;
+        }
+
+        /* First Page */
+        #question-page {
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f1 50%, #ffd4eb 100%);
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-up 8s infinite ease-in;
+            opacity: 0.3;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .question-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+        }
+
+        .template-image {
+            font-size: 8rem;
+            margin-bottom: 1rem;
+            animation: wiggle 2s infinite;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .template-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            color: #ff4d7d;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #ff6b9d;
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .buttons-container {
+            position: relative;
+            min-height: 400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .buttons-inner {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 1.2rem 3rem;
+            font-size: 1.5rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        #yes-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff4d7d 100%);
+            color: white;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 30px rgba(255, 77, 125, 0.4);
+        }
+
+        #no-btn {
+            background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+            color: #666;
+            transition: all 0.15s ease;
+        }
+
+        #no-btn.floating {
+            position: absolute;
+        }
+
+        /* Success Page */
+        #success-page {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffdde1 100%);
+            flex-direction: column;
+        }
+
+        .success-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .success-template-image {
+            font-size: 8rem;
+            margin-bottom: 1rem;
+            animation: wiggle 2s infinite;
+            width: 250px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .success-template-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .success-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(255, 77, 125, 0.3);
+            margin-bottom: 2rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .success-message {
+            font-size: 2rem;
+            color: #fff;
+            font-weight: 600;
+            max-width: 700px;
+            line-height: 1.6;
+            text-shadow: 2px 2px 4px rgba(255, 77, 125, 0.2);
+        }
+
+        .menu-card {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.92);
+            color: #ff4d7d;
+            padding: 1.5rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 16px 40px rgba(255, 77, 125, 0.25);
+            max-width: 720px;
+            text-align: left;
+        }
+
+        .menu-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.2rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .menu-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .menu-list li {
+            font-size: 1.35rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .big-heart {
+            font-size: 8rem;
+            margin: 2rem 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.2);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        .falling-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .heart-fall {
+            position: absolute;
+            top: 0;
+            font-size: 3rem;
+            animation: fall 4s linear forwards;
+            opacity: 0.8;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-200px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Question Page -->
+    <div id="question-page" class="page active">
+        <div class="floating-hearts"></div>
+        <div class="question-container">
+            <!-- KARUSELL BILDE - vil bytte automatisk hver 2. sekund -->
+            <div class="template-image" id="carousel-image">
+                <img src="bilde5.png">
+            </div>
+            
+            <h1>💕 Kjære Miriam 💕</h1>
+            <p class="subtitle">Vil du være min Valentine😉?</p>
+            <div class="buttons-container">
+                <div class="buttons-inner">
+                    <button id="yes-btn" class="btn">Ja! ❤️</button>
+                    <button id="no-btn" class="btn">Nei 😭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Page -->
+    <div id="success-page" class="page">
+        <div class="falling-hearts"></div>
+        <div class="success-container">
+            <!-- KARUSELL BILDE - vil bytte automatisk hver 2. sekund -->
+            <div class="success-template-image" id="success-carousel-image">
+                <img src="bilde3.png">
+            </div>
+            
+            <div class="success-title"></div>
+            <div class="big-heart"></div>
+            <p class="success-message">
+                Yesss! 💕<br>
+                Jeg vil invitere deg til en 6-retters på SMALHANS!<br>
+                14. februar 🎉
+            </p>
+            <div class="menu-card">
+                <div class="menu-title">Menyen</div>
+                <ul class="menu-list">
+                    <li>🧇 Vaffel med tartar</li>
+                    <li>🦪 Østers med sjalottløk, courtbullion og rosepepper</li>
+                    <li>🌱 Salt bakte rødbeter, sylta polkabeter solsikkekjerner, chevre, bete espuma og druepulver</li>
+                    <li>🥬Pannestekte kamskjell med buerre blanc smørstekt grønnkål aromatiske oljer</li>
+                    <li>🦆 Stekt andebryst med karamellisert sellerirotpuré og appelsinsaus</li>
+                    <li>🍨 Bringebærsorbet med hvit sjokolade</li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // ==========================================
+        // TILPASS DISSE VERDIENE:
+        // ==========================================
+        
+        // Bilder som flyter oppover på første side
+        const floatingEmojis = ['💕', '💖', '💗', '💝', '💞'];
+        
+        // Bilder som faller nedover på suksess-siden
+        // Du kan blande emojis og bildestier (f.eks. 'bilde1.png', 'bilde2.png')
+        const fallingEmojis = ['bilde5.png', '💖', '💗', '💝', '💞', '🌹', '❤️', '💗','bilde2.png','bilde7.png','bilde6.png'];
+        
+        // KARUSELL BILDER - Legg til dine egne bilder her!
+        // Bruk enten emojis eller bildestier som "bilde1.png", "bilde2.png" osv.
+        const carouselImages = [
+            'bilde6.png',
+            'bilde2.png', 
+            'bilde3.png',
+            'bilde4.png',
+            'bilde5.png',
+            'bilde7.png',
+            'bilde8.png'
+            
+        ];
+        
+        // Image carousel for success page
+        let successImageIndex = 0;
+        const successCarouselImageDiv = document.getElementById('success-carousel-image');
+        
+        function updateSuccessCarouselImage() {
+            const currentImage = carouselImages[successImageIndex];
+            
+            // Check if it's an emoji or image path
+            if (currentImage.endsWith('.png') || currentImage.endsWith('.jpg') || currentImage.endsWith('.jpeg') || currentImage.endsWith('.gif') || currentImage.endsWith('.webp')) {
+                successCarouselImageDiv.innerHTML = `<img src="${currentImage}">`;
+            } else {
+                successCarouselImageDiv.textContent = currentImage;
+            }
+            
+            successImageIndex = (successImageIndex + 1) % carouselImages.length;
+        }
+        
+        // Start carousel - change image every 2 seconds (only when on success page)
+        let successCarouselInterval;
+        
+        // ==========================================
+        
+        // Image carousel for first page
+        let currentImageIndex = 0;
+        const carouselImageDiv = document.getElementById('carousel-image');
+        
+        function updateCarouselImage() {
+            const currentImage = carouselImages[currentImageIndex];
+            
+            // Check if it's an emoji or image path
+            if (currentImage.endsWith('.png') || currentImage.endsWith('.jpg') || currentImage.endsWith('.jpeg') || currentImage.endsWith('.gif') || currentImage.endsWith('.webp')) {
+                carouselImageDiv.innerHTML = `<img src="${currentImage}" style="width: 250px; height: auto; border-radius: 20px;">`;
+            } else {
+                carouselImageDiv.textContent = currentImage;
+            }
+            
+            currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
+        }
+        
+        // Start carousel - change image every 2 seconds
+        setInterval(updateCarouselImage, 2000);
+        
+        // Set initial image
+        updateCarouselImage();
+        
+        // Create floating hearts on question page
+        const floatingHeartsContainer = document.querySelector('.floating-hearts');
+        
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-float';
+            heart.textContent = floatingEmojis[Math.floor(Math.random() * floatingEmojis.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 3 + 6) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            floatingHeartsContainer.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 10000);
+        }
+
+        setInterval(createFloatingHeart, 500);
+
+        // Improved No button movement logic
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const buttonsContainer = document.querySelector('.buttons-container');
+        
+        let isFloating = false;
+        
+        function getDistance(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+        }
+        
+        function makeButtonFloat() {
+            if (!isFloating) {
+                const noBtnRect = noBtn.getBoundingClientRect();
+                const containerRect = buttonsContainer.getBoundingClientRect();
+                
+                // Get current position relative to container
+                const currentLeft = noBtnRect.left - containerRect.left;
+                const currentTop = noBtnRect.top - containerRect.top;
+                
+                // Make it absolutely positioned at current location
+                noBtn.classList.add('floating');
+                noBtn.style.left = currentLeft + 'px';
+                noBtn.style.top = currentTop + 'px';
+                
+                isFloating = true;
+            }
+        }
+        
+        function moveButtonAway(mouseX, mouseY) {
+            makeButtonFloat();
+            
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            const yesBtnRect = yesBtn.getBoundingClientRect();
+            const noBtnRect = noBtn.getBoundingClientRect();
+            
+            // Calculate yes button position relative to container
+            const yesBtnLeft = yesBtnRect.left - containerRect.left;
+            const yesBtnTop = yesBtnRect.top - containerRect.top;
+            const yesBtnCenterX = yesBtnLeft + yesBtnRect.width / 2;
+            const yesBtnCenterY = yesBtnTop + yesBtnRect.height / 2;
+            
+            // Try to find a valid position
+            let attempts = 0;
+            let newX, newY, isValidPosition;
+            
+            do {
+                // Generate random position within container bounds
+                const padding = 20;
+                newX = padding + Math.random() * (containerRect.width - noBtnRect.width - padding * 2);
+                newY = padding + Math.random() * (containerRect.height - noBtnRect.height - padding * 2);
+                
+                // Calculate center of new position
+                const newCenterX = newX + noBtnRect.width / 2;
+                const newCenterY = newY + noBtnRect.height / 2;
+                
+                // Check if overlapping with yes button (needs to be at least 180px away from center)
+                const distanceFromYes = getDistance(newCenterX, newCenterY, yesBtnCenterX, yesBtnCenterY);
+                
+                // Also check rectangle overlap to be extra safe
+                const noLeft = newX;
+                const noRight = newX + noBtnRect.width;
+                const noTop = newY;
+                const noBottom = newY + noBtnRect.height;
+                
+                const yesLeft = yesBtnLeft;
+                const yesRight = yesBtnLeft + yesBtnRect.width;
+                const yesTop = yesBtnTop;
+                const yesBottom = yesBtnTop + yesBtnRect.height;
+                
+                const noOverlap = !(noLeft < yesRight + 40 && 
+                                   noRight > yesLeft - 40 && 
+                                   noTop < yesBottom + 40 && 
+                                   noBottom > yesTop - 40);
+                
+                isValidPosition = distanceFromYes > 180 && noOverlap;
+                attempts++;
+                
+            } while (!isValidPosition && attempts < 100);
+            
+            // Apply the new position with smooth transition
+            noBtn.style.left = newX + 'px';
+            noBtn.style.top = newY + 'px';
+        }
+        
+        // Track mouse movement over the entire container
+        buttonsContainer.addEventListener('mousemove', (e) => {
+            const noBtnRect = noBtn.getBoundingClientRect();
+            
+            // Calculate distance from mouse to no button center
+            const noBtnCenterX = noBtnRect.left + noBtnRect.width / 2;
+            const noBtnCenterY = noBtnRect.top + noBtnRect.height / 2;
+            const distance = getDistance(e.clientX, e.clientY, noBtnCenterX, noBtnCenterY);
+            
+            // Move button away when mouse gets within 80px
+            if (distance < 80) {
+                moveButtonAway(e.clientX, e.clientY);
+            }
+        });
+        
+        // Handle touch devices
+        buttonsContainer.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const noBtnRect = noBtn.getBoundingClientRect();
+            
+            const noBtnCenterX = noBtnRect.left + noBtnRect.width / 2;
+            const noBtnCenterY = noBtnRect.top + noBtnRect.height / 2;
+            const distance = getDistance(touch.clientX, touch.clientY, noBtnCenterX, noBtnCenterY);
+            
+            if (distance < 80) {
+                moveButtonAway(touch.clientX, touch.clientY);
+            }
+        }, { passive: false });
+        
+        // Prevent clicking on no button
+        noBtn.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            moveButtonAway(e.clientX, e.clientY);
+        });
+        
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            moveButtonAway(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        // Yes button click
+        yesBtn.addEventListener('click', () => {
+            document.getElementById('question-page').classList.remove('active');
+            document.getElementById('success-page').classList.add('active');
+            
+            // Start success carousel
+            updateSuccessCarouselImage();
+            successCarouselInterval = setInterval(updateSuccessCarouselImage, 2000);
+            
+            // Create falling hearts
+            const fallingHeartsContainer = document.querySelector('.falling-hearts');
+            
+            function createFallingHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'heart-fall';
+                const item = fallingEmojis[Math.floor(Math.random() * fallingEmojis.length)];
+                
+                // Check if it's an image or emoji
+                if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.jpeg') || item.endsWith('.gif') || item.endsWith('.webp')) {
+                    heart.innerHTML = `<img src="${item}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 10px;">`;
+                } else {
+                    heart.textContent = item;
+                }
+                
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                heart.style.animationDelay = Math.random() * 0.5 + 's';
+                fallingHeartsContainer.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 6000);
+            }
+            
+            // Create initial burst
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createFallingHeart, i * 100);
+            }
+            
+            // Continue creating hearts
+            setInterval(createFallingHeart, 300);
+        });
+    </script>
+</body>
+</html>
