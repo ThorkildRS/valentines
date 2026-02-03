@@ -331,6 +331,40 @@
                 opacity: 0;
             }
         }
+        /* Responsive adjustments for mobile */
+        @media (max-width: 600px) {
+            body {
+                overflow: auto;
+                height: auto;
+                padding: 12px;
+            }
+
+            .question-container,
+            .success-container {
+                padding: 1.25rem;
+                border-radius: 18px;
+                max-width: 95%;
+            }
+
+            h1 { font-size: 2.2rem; }
+            .subtitle { font-size: 1rem; margin-bottom: 1.5rem; }
+
+            .template-image,
+            .success-template-image {
+                width: 160px;
+                height: 160px;
+            }
+
+            .buttons-container { min-height: 220px; }
+            .buttons-inner { flex-direction: column; gap: 0.75rem; }
+            .btn { width: 100%; padding: 0.9rem 1rem; font-size: 1.1rem; }
+
+            .menu-list li { font-size: 1rem; }
+            .big-heart { font-size: 6rem; }
+
+            .heart-float { font-size: 1.4rem; }
+            .heart-fall { width: 1.8rem; height: 1.8rem; font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>
@@ -441,7 +475,7 @@
             
             // Check if it's an emoji or image path
             if (currentImage.endsWith('.png') || currentImage.endsWith('.jpg') || currentImage.endsWith('.jpeg') || currentImage.endsWith('.gif') || currentImage.endsWith('.webp')) {
-                carouselImageDiv.innerHTML = `<img src="${currentImage}" style="width: 250px; height: auto; border-radius: 20px;">`;
+                carouselImageDiv.innerHTML = `<img src="${currentImage}">`;
             } else {
                 carouselImageDiv.textContent = currentImage;
             }
